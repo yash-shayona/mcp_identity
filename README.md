@@ -1,33 +1,31 @@
-### MCP Identity
+# MCP Identity
 
-Generic trusted MCP request identity resolution for Frappe users
+`mcp_identity` resolves the Frappe user for an authenticated MCP HTTP request.
+It depends only on Frappe and owns no DocTypes, business permissions, provider
+adapters, or MCP tool permissions.
 
-### Installation
+## HTTP identity contract
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
+The supported client sends both values with each request:
 
-```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch version-16
-bench install-app mcp_identity
+```http
+Authorization: Bearer <MCP_HTTP_SHARED_SECRET>
+X-MCP-User-Email: person@example.com
 ```
 
-### Contributing
+`MCP_HTTP_SHARED_SECRET` is server-only configuration and must be at least 32
+characters. The secret authenticates the configured client; only after it
+validates does the app resolve the supplied email to an existing, enabled
+Frappe `User`. Missing, malformed, unknown, disabled, or unauthenticated
+identities fail closed. No Guest, service-user, previous-request, or provider
+mapping fallback is used for HTTP requests.
 
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+Consumers receive the resolved Frappe User and run their own request-scoped
+context and native permission checks. The dependency direction is:
 
-```bash
-cd apps/mcp_identity
-pre-commit install
+```text
+Frappe -> mcp_identity -> mcp_erpnext / future MCP consumers
 ```
 
-Pre-commit is configured to use the following tools for checking and formatting your code:
-
-- ruff
-- eslint
-- prettier
-- pyupgrade
-
-### License
-
-mit
+This app is not an ERPNext permission system and is not an adapter for any
+specific MCP client or identity provider.
