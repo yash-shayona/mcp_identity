@@ -1,5 +1,9 @@
 # MCP Identity
 
+## Architecture & Mental Model
+
+![MCP ERPNext Architecture & Mental Model](docs/architecture/mcp-erpnext-architecture-mental-model.png)
+
 `mcp_identity` owns MCP authentication-mode configuration, resolves verified
 Frappe execution identities for MCP consumers, and supplies the narrow Frappe
 OAuth resource-binding compatibility layer described below. It owns no custom
