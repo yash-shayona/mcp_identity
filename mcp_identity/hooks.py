@@ -144,6 +144,18 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
+doc_events = {
+    "OAuth Client": {
+        "validate": "mcp_identity.oauth_compat.validate_oauth_client_resource",
+    },
+    "OAuth Authorization Code": {
+        "before_insert": "mcp_identity.oauth_compat.bind_authorization_code_before_insert",
+    },
+    "OAuth Bearer Token": {
+        "before_insert": "mcp_identity.oauth_compat.bind_bearer_token_before_insert",
+    },
+}
+
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
@@ -189,6 +201,13 @@ app_license = "mit"
 # Overriding Methods
 # ------------------------------
 #
+override_whitelisted_methods = {
+    "frappe.integrations.oauth2.authorize": "mcp_identity.oauth_compat.authorize",
+    "frappe.integrations.oauth2.approve": "mcp_identity.oauth_compat.approve",
+    "frappe.integrations.oauth2.get_token": "mcp_identity.oauth_compat.get_token",
+    "frappe.integrations.oauth2.revoke_token": "mcp_identity.oauth_compat.revoke_token",
+}
+
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "mcp_identity.event.get_events"
 # }
@@ -261,4 +280,3 @@ app_license = "mit"
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-

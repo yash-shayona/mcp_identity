@@ -1,5 +1,12 @@
 # MCP Identity v1 — Implementation Task
 
+> Current foundation note (Task 03): `mcp_identity` now also owns exact parsing
+> of `MCP_HTTP_AUTH_MODE=trusted_header|oauth` and configured stdio identity
+> validation for `MCP_FRAPPE_USER`. Missing HTTP auth mode defaults to
+> `trusted_header`. `oauth` is recognized but intentionally unavailable until
+> the separately approved Frappe resource-binding work is implemented. This
+> does not add an OAuth flow, schema, hook, or token verifier.
+
 ## Status
 
 Architecture: **Frozen**
@@ -846,4 +853,3 @@ MCP Identity Client Compatibility Verification
 Verify the frozen generic HTTP identity contract against the actual clients we intend to support next (LibreChat first, then other MCP clients) and only introduce an additional authentication adapter if a real client cannot satisfy the shared-secret + verified-email contract.
 
 Do not pre-build unused authentication systems.
-
